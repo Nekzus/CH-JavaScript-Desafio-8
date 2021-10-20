@@ -17,9 +17,9 @@ let itemGame; // Variable que almacena nuevo objeto/item a ingresar en el array 
 let repeticion = 0; // Subindice de repeticion item. Inicialización.
 let videoJuegos = JSON.parse(localStorage.getItem('videoJuegos')) || []; // Array que almacena los items ingresados por el usuario a modo de objetos. Se realiza lectura del array almacenado en localStorage.
 let printHtml = document.getElementById('printHtml');// Referencia variable al cuadro de productos ingresados en el DOM.
-let videoJuego;
+let videoJuego; // Variable para insertar el codigo HTML en la tabla.
 let copiaVideoJuegos = [ ...videoJuegos]; // Se realiza una copia del array almacenado, para manipular los datos sin afectar el array original.
-let resultado;
+let resultado; // Variable para la impresion de los items en el HTML luego de aplicar los filtrados.
 const btnIngr = document.querySelector("#btnEjec"); // Como parte de sumar optimizacion al codigo, aplique algo de interaccion con el codigo HTML mediante un boton de ingreso, y bootstrap.
 const btnDelet = document.querySelector("#btnDelet"); // Como parte de sumar optimizacion al codigo, aplique algo de interaccion con el codigo HTML mediante un boton de borrado, y bootstrap.
 const btnDeletAll = document.querySelector('#btnDeletAll'); // Como parte de sumar optimizacion al codigo, aplique algo de interaccion con el codigo HTML mediante un boton de borrar todo, y bootstrap.
@@ -153,7 +153,7 @@ btnIngr.addEventListener("click", () => { // Llamado ingreso de items mediante c
             videoJuegos.push(itemGame);
             localStorage.setItem('videoJuegos', JSON.stringify(videoJuegos)); // Se almacena en el localStorage el nuevo objeto-item creado.
             itemGame.printConsole(); // Se llama el método para la impresion en consola del ojeto.
-            location.reload();
+            location.reload(); // Se refresca el navegador para que se muestren los cambios.
         }
 
         confirmacion1 = confirm("Desea ingresar un nuevo item?"); // Confirmacion de creación de Nuevo Item.
@@ -165,9 +165,10 @@ btnIngr.addEventListener("click", () => { // Llamado ingreso de items mediante c
     console.table(videoJuegos); // Se muestra listado (array) en consola con los items en modo tabla.
 }); // Cierre alcance ejecución boton de ingreso de item en el HTML.
 
-btnModf.addEventListener("click", () => { // Llamado modificación de item mediante click del boton en el HTML. TODO:
+btnModf.addEventListener("click", () => { // Llamado modificación de item mediante click del boton en el HTML.
+
     //**** MODO MODIFICACIÓN: MODIFICACIÓN DE ITEM SELECCIONADO POR EL USUARIO ****/
-    if(videoJuegos.length > 0) {
+    if(videoJuegos.length > 0) { // Se verifica que hayan items almacenados.
         do {
             itemModf = parseInt(prompt("Ingrese el número de item a mofificar")); // Se solicita al usuario el numero de item a modificar.
             if (isNaN(itemModf)) { // En caso de cancelacion de la modificación, se sale del do... while.
@@ -175,56 +176,55 @@ btnModf.addEventListener("click", () => { // Llamado modificación de item media
             } else if (busquedaPorIdtm(itemModf) !== undefined) { // Si se comprueba la existencia del item a modificar, se procede con la modificación.
                 confirmacion2 = confirm(`Desea modificar el item #${itemModf} del listado?`); // Se confirma si en verdad se desea modificar el item.
                 videoJuegos = JSON.parse(localStorage.getItem('videoJuegos')); // Se lee el array almacenado en el localStorage.
-                let indexItemModf = videoJuegos.findIndex(videoJuego => videoJuego.idItm === itemModf); // Se obtiene el numero de posicion en el array del item a modificar.
-                itemGral = parseInt(prompt(`Campo a Modificar Item #${itemModf}\n[1]-Titulo\n[2]-Plataforma\n[3]-Genero\n[4]-Año\n[5]-Precio\n[6]-Stock`)); // Se solicita al usuario seleccione ordenar o filtar campos.
+                itemGral = parseInt(prompt(`Campo a Modificar Item #${itemModf}\n[1]-Titulo\n[2]-Plataforma\n[3]-Genero\n[4]-Año\n[5]-Precio\n[6]-Stock`)); // Se solicita al usuario elija el campo a modificar sobre el item seleccionado.
                 if(isNaN(itemGral)) { // Si se cancela ingreso.
                 confirmacion2 = false;// Se sale del do... while.
                 break;
                 }
                 switch (itemGral) {
-                    case 1:
+                    case 1:        // Se elige modificar Titulo.
                         itemGral = prompt(`Item #${itemModf}\nIngresar nuevo Titulo`).toUpperCase();
-                        videoJuegos.map((dato) => {
+                        videoJuegos.map((dato) => {  // Se modifica titulo con nuevo valor.
                             if(dato.idItm === itemModf) {
                                 dato.titulo = itemGral;
                             } return dato;
                         });
                         break;
-                    case 2:
+                    case 2:       // Se elige modificar Plataforma.
                         itemGral = prompt(`Item #${itemModf}\nIngresar nueva Plataforma`).toUpperCase();
-                        videoJuegos.map((dato) => {
+                        videoJuegos.map((dato) => {  // Se modifica plataforma con nuevo valor.
                             if(dato.idItm === itemModf) {
                                 dato.plataforma = itemGral;
                             } return dato;
                             });
                             break;
-                    case 3:
+                    case 3:        // Se elige modificar Genero.
                         itemGral = prompt(`Item #${itemModf}\nIngresar nuevo Genero`).toUpperCase();
-                        videoJuegos.map((dato) => {
+                        videoJuegos.map((dato) => {  // Se modifica genero con nuevo valor.
                             if(dato.idItm === itemModf) {
                                 dato.genero = itemGral;
                             } return dato;
                             });
                             break;
-                    case 4:
+                    case 4:        // Se elige modificar Año.
                         itemGral = parseInt(prompt(`Item #${itemModf}\nIngresar nuevo Año`));
-                        videoJuegos.map((dato) => {
+                        videoJuegos.map((dato) => {  // Se modifica año con nuevo valor.
                             if(dato.idItm === itemModf) {
                                 dato.anio = itemGral;
                             } return dato;
                             });
                             break;
-                    case 5:
+                    case 5:        // Se elige modificar Precio.
                         itemGral = parseFloat(prompt(`Item #${itemModf}\nIngresar nuevo Precio`)).toFixed(2);
-                        videoJuegos.map((dato) => {
+                        videoJuegos.map((dato) => {   // Se modifica precio con nuevo valor.
                             if(dato.idItm === itemModf) {
                                 dato.precio = itemGral;
                             } return dato;
                             });
                             break;
-                    case 6:
+                    case 6:        // Se elige modificar Stock.
                         itemGral = parseInt(prompt(`Item #${itemModf}\nIngresar nuevo Stock`));
-                        videoJuegos.map((dato) => {
+                        videoJuegos.map((dato) => {   // Se modifica stock con nuevo valor.
                             if(dato.idItm === itemModf) {
                                 dato.stock = itemGral;
                             } return dato;
@@ -234,19 +234,19 @@ btnModf.addEventListener("click", () => { // Llamado modificación de item media
                         alert("Operador Invalido"); // Alerta en caso de ingresar una selección no valida.
                             break;
                 }
-                localStorage.setItem('videoJuegos', JSON.stringify(videoJuegos)); // Se almacena el array con el item borrado.
-                console.table( // Se imprime en consola el array actualizado con los items eliminados.
+                localStorage.setItem('videoJuegos', JSON.stringify(videoJuegos)); // Se almacena el array con el item modificado.
+                console.table( // Se imprime en consola el array actualizado con el item modificado.
                     "%cLISTADO DE ITEMS INGRESADOS",
                     "color: white; font-size: 16px; font-weight: bold; background: blue;"
                 );
                 console.table(videoJuegos); // Se muestra nuevo listado (array) en consola sin los items eliminados, en modo tabla.
-                location.reload(); 
+                location.reload(); // Se refresca el navegador para que se muestren los cambios.
 
             } else {
-                alert(`El item #${itemModf} no existe en el listado`); // si el item a borrar no existe, se avisa de la inexistencia del item dentro del listado en el array.
+                alert(`El item #${itemModf} no existe en el listado`); // Si el item a modificar no existe, se avisa de la inexistencia del item dentro del listado en el array.
             }
     
-        } while (confirmacion2); // Espera confirmacion de cancelacion del borrado.
+        } while (confirmacion2); // Espera confirmacion de cancelacion de modificación.
 
     }}); // Cierre alcance ejecución boton de modificación de item en el HTML.
 
@@ -444,7 +444,7 @@ btnOrder.addEventListener("click", () => { // Llamado ordenamiento de items medi
 //**** CAMBIO FORMATO Y ESTILO TEXTO HTML ****//
 
 btnMins.addEventListener('click', () => { // Al presionar el boton de minuscula.
-    textoHtml.classList.toggle('lowercase');    // Se agrega o se quita al texto la clase uppercase con el estilo declarado en el archivo CSS.
+    textoHtml.classList.toggle('lowercase');    // Se agrega o se quita al texto la clase lowercase con el estilo declarado en el archivo CSS.
 });
 
 btnCurs.addEventListener('click', () => { // Al presionar el boton de cursiva.
